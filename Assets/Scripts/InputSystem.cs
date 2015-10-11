@@ -21,7 +21,7 @@ public class InputSystem : MonoBehaviour {
 		A = B = C = D = false;
 	}
 
-	public void UpdatePlayer(PlayerSystem targetPlayerSystem) {
+	public void UpdateCharacter(CharacterSystem targetCharacterSystem) {
 		
 	}
 

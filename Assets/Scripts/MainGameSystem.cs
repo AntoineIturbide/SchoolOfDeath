@@ -7,9 +7,8 @@ public class MainGameSystem : MonoBehaviour {
 	//List of player contollers
 	List<InputSystem> _playerControllers = new List<InputSystem>();
 
-	//List of characters object
-	List<InputSystem> _playerList = new List<InputSystem>();
-
+	//List of characters objects
+	List<CharacterSystem> _playerList = new List<CharacterSystem>();
 
 
 }
