@@ -5,13 +5,13 @@ public class InputSystem : MonoBehaviour {
 
 	public Vector2 L_STICK {
 			get {
-			return new Vector2(Input.GetAxis("XBOX_L_STICK_X"),Input.GetAxis("XBOX_L_STICK_Y"));
+			return new Vector2(Input.GetAxis("_xboxController[1].L_STICK.x"),Input.GetAxis("_xboxController[1].L_STICK.y"));
 			}
 			
 	}
 	public Vector2 R_STICK {
 		get {
-		return new Vector2(Input.GetAxis("XBOX_L_STICK_X"),Input.GetAxis("XBOX_L_STICK_Y"));
+			return new Vector2(Input.GetAxis("_xboxController[1].R_STICK.x"),Input.GetAxis("_xboxController[1].R_STICK.y"));
 		}
 	}
 
@@ -19,10 +19,6 @@ public class InputSystem : MonoBehaviour {
 
 	public void Awake() {
 		A = B = C = D = false;
-	}
-
-	public void UpdateCharacter(CharacterSystem targetCharacterSystem) {
-		
 	}
 
 }
