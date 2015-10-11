@@ -15,10 +15,16 @@ public class InputSystem : MonoBehaviour {
 		}
 	}
 
-	public bool A, B, C, D;
+	public bool B, C, D;
+
+	public bool A {
+		get {
+			return Input.GetKeyDown(KeyCode.Joystick1Button0);
+		}
+	}
 
 	public void Awake() {
-		A = B = C = D = false;
+		B = C = D = false;
 	}
 
 }

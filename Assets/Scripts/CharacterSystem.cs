@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -7,6 +7,8 @@ public class CharacterSystem : MonoBehaviour {
 
 	float _walkSpeed = 2;
 	float _rotationSpeed = 2;
+
+	float _jump = 0;
 
 	Vector3 _velocity = Vector3.zero;
 	Vector3 _rotationVelocity = Vector3.zero;
@@ -21,9 +23,19 @@ public class CharacterSystem : MonoBehaviour {
 
 	public void RecieveInputs(InputSystem inputSystem){
 		// Calculate newVelocity
+		// Walk
 		Vector3 newVelocity = Vector3.zero;
 		newVelocity += inputSystem.L_STICK.x * _transform.right * _walkSpeed;
 		newVelocity += inputSystem.L_STICK.y * -_transform.forward * _walkSpeed;
+		// Jump
+		if(inputSystem.A){
+			_jump += 10;
+		}
+		// Newton
+		_jump += -Vector3.Magnitude(Physics.gravity) * _rigidbody.mass * 1f;
+
+		// newVelocity += _jump * Vector3.up;
+
 		// Apply newNelocity
 		_rigidbody.velocity = newVelocity;
 
@@ -32,7 +44,6 @@ public class CharacterSystem : MonoBehaviour {
 		newRotationVelocity += Vector3.up * inputSystem.R_STICK.x * _rotationSpeed;
 		newRotationVelocity += Vector3.right * inputSystem.R_STICK.y * _rotationSpeed;
 		newRotationVelocity.z = 0;
-
 		/*
 		Quaternion newRotation = _transform.localRotation.eulerAngles;
 		newRotation *= Quaternion.AngleAxis(inputSystem.R_STICK.x * _rotationSpeed, Vector3.up);
