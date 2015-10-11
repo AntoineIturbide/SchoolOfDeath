@@ -13,7 +13,7 @@ public class InputSystem : MonoBehaviour {
 		get {
 		return new Vector2(Input.GetAxis("XBOX_L_STICK_X"),Input.GetAxis("XBOX_L_STICK_Y"));
 		}
-	};
+	}
 
 	public bool A, B, C, D;
 
