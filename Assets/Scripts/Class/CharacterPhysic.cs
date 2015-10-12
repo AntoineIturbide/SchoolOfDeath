@@ -44,6 +44,12 @@ public class CharacterPhysic  {
 		_conservedVelocity += _mass * _gravity * Time.fixedDeltaTime;
 	}
 
+	// Apply jump to the conserved velocity
+	public void ApplyJump(CharacterJump jump){
+		// Calculate how to aply a jum based on character's mass, the gravity vector and time
+		_conservedVelocity += jump._jumpStrengh * -_gravity.normalized;
+	}
+
 	// Reset character's applied gravity
 	public void ResetGravity(){
 		// If the character is going in the same direction as gravity is pushing him to

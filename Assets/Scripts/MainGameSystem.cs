@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class MainGameSystem : MonoBehaviour {
 
+	// [Debug] Test character references
+	public InputSystem _debug_mainController;
+	public CharacterSystem _debug_mainCharacter;
+
 	/* ATRIBUTES */
 
 	//List of player contollers
@@ -11,10 +15,6 @@ public class MainGameSystem : MonoBehaviour {
 
 	//List of characters objects
 	List<CharacterSystem> _characterList = new List<CharacterSystem>();
-
-	// [Debug] Test character references
-	public InputSystem _debug_mainController;
-	public CharacterSystem _debug_mainCharacter;
 
 
 

@@ -6,15 +6,18 @@ using System.Collections.Generic;
 
 public class CharacterSystem : MonoBehaviour {
 
-	/* ATTRIBUTES */
+	// [Debgug] Character's rotation speed
+	float _debug_rotationSpeed = 200;
 
+	// [Debug] If set to false, allow the character to ignore gravity
 	public bool _debug_useGravity = true;
+
+
+
+	/* ATTRIBUTES */
 
 	// Character linked transform
 	Transform _transform;
-
-
-	float _debug_rotationSpeed = 200;
 
 	// Character walking system
 	public CharacterWalk _walk;
@@ -23,7 +26,10 @@ public class CharacterSystem : MonoBehaviour {
 	public CharacterJump _jump;
 
 	// Character physics system
-	[HideInInspector] public CharacterPhysic _physic;
+	[HideInInspector]
+	public CharacterPhysic _physic;
+
+
 
 	/* METHODS */
 
@@ -39,12 +45,12 @@ public class CharacterSystem : MonoBehaviour {
 		// Calculate walk velocity from inputs
 		_walk.RecieveInputs(inputSystem);
 
-		// If player use jump button and is on groun
+		// If player use jump button and is on ground
 		if(inputSystem.A && _physic._onGround){
 			// Reset gravity
-			_physic._conservedVelocity -= Vector3.Project(_physic._conservedVelocity,Vector3.Normalize(_physic._gravity));
-			// Add jump impultion to conserved velocity
-			_physic._conservedVelocity += _jump._jumpStrengh * -_physic._gravity.normalized;
+			_physic.ResetGravity();
+			// Apply jump impultion to conserved velocity
+			_physic.ApplyJump(_jump);
 		}
 
 		// [Debug] Character rotation
@@ -53,6 +59,8 @@ public class CharacterSystem : MonoBehaviour {
 		_transform.localRotation = newRotation;
 
 	}
+
+
 
 	/* PHYSIC */
 
