@@ -38,6 +38,12 @@ public class CharacterPhysic  {
 
 	/* METHODS */
 
+	// Apply gravity to the conserved velocity
+	public void ApplyGravity(){
+		// Calculate how to aply gravity based on character's mass, the gravity vector and time
+		_conservedVelocity += _mass * _gravity * Time.fixedDeltaTime;
+	}
+
 	// Reset character's applied gravity
 	public void ResetGravity(){
 		// If the character is going in the same direction as gravity is pushing him to

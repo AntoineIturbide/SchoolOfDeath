@@ -23,7 +23,7 @@ public class CharacterSystem : MonoBehaviour {
 	public CharacterJump _jump;
 
 	// Character physics system
-	public CharacterPhysic _physic;
+	[HideInInspector] public CharacterPhysic _physic;
 
 	/* METHODS */
 
@@ -59,7 +59,7 @@ public class CharacterSystem : MonoBehaviour {
 	void FixedUpdate() {
 		// Apply gravity to the conserved velocity
 		// [Debug] Can be desactivated with the _debug_useGravity boolean
-		if(_debug_useGravity) _physic._conservedVelocity += _physic._mass * _physic._gravity * Time.fixedDeltaTime;
+		if(_debug_useGravity) _physic.ApplyGravity();
 
 		// Create new velocity based on the conserved velocity
 		Vector3 newVelocity = _physic._conservedVelocity;
