@@ -1,65 +1,108 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody))]
 
 public class CharacterSystem : MonoBehaviour {
 
-	float _walkSpeed = 2;
-	float _rotationSpeed = 2;
+	/* ATTRIBUTES */
 
-	float _jump = 0;
+	public bool _debug_useGravity = true;
 
-	Vector3 _velocity = Vector3.zero;
-	Vector3 _rotationVelocity = Vector3.zero;
-
+	// Character linked transform
 	Transform _transform;
-	Rigidbody _rigidbody;
+
+
+	float _debug_rotationSpeed = 200;
+
+	// Character walking system
+	public CharacterWalk _walk;
+
+	// Character jumping system
+	public CharacterJump _jump;
+
+	// Character physics system
+	public CharacterPhysic _physic;
+
+	/* METHODS */
 
 	void Awake(){
+		// Set the character's transform reference
 		_transform = this.gameObject.transform;
-		_rigidbody = this.gameObject.GetComponent<Rigidbody>();
+
+		// Set the character's rigidbody reference
+		_physic._rigidbody = this.gameObject.GetComponent<Rigidbody>();
 	}
 
 	public void RecieveInputs(InputSystem inputSystem){
-		// Calculate newVelocity
-		// Walk
-		Vector3 newVelocity = Vector3.zero;
-		newVelocity += inputSystem.L_STICK.x * _transform.right * _walkSpeed;
-		newVelocity += inputSystem.L_STICK.y * -_transform.forward * _walkSpeed;
-		// Jump
-		if(inputSystem.A){
-			_jump += 10;
+		// Calculate walk velocity from inputs
+		_walk.RecieveInputs(inputSystem);
+
+		// If player use jump button and is on groun
+		if(inputSystem.A && _physic._onGround){
+			// Reset gravity
+			_physic._conservedVelocity -= Vector3.Project(_physic._conservedVelocity,Vector3.Normalize(_physic._gravity));
+			// Add jump impultion to conserved velocity
+			_physic._conservedVelocity += _jump._jumpStrengh * -_physic._gravity.normalized;
 		}
-		// Newton
-		_jump += -Vector3.Magnitude(Physics.gravity) * _rigidbody.mass * 1f;
 
-		// newVelocity += _jump * Vector3.up;
-
-		// Apply newNelocity
-		_rigidbody.velocity = newVelocity;
-
-		// Rotate character (and camera)
-		Vector3 newRotationVelocity = Vector3.zero;
-		newRotationVelocity += Vector3.up * inputSystem.R_STICK.x * _rotationSpeed;
-		newRotationVelocity += Vector3.right * inputSystem.R_STICK.y * _rotationSpeed;
-		newRotationVelocity.z = 0;
-		/*
-		Quaternion newRotation = _transform.localRotation.eulerAngles;
-		newRotation *= Quaternion.AngleAxis(inputSystem.R_STICK.x * _rotationSpeed, Vector3.up);
-		newRotation *= Quaternion.AngleAxis(inputSystem.R_STICK.y * _rotationSpeed, _transform.right);
-		newRotation.LookRotation(Vector3.up * inputSystem.R_STICK.x * _rotationSpeed, _transform.right * inputSystem.R_STICK.y * _rotationSpeed);
-		_transform.localRotation = newRotation;
-		
-		Vector3 newRotation = _transform.localRotation.eulerAngles;
-		newRotation = newRotation + Quaternion.Euler(inputSystem.R_STICK.x * _rotationSpeed * Vector3.up);
-		_transform.localRotation = Quaternion.Euler(newRotation);
-		*/
-
+		// [Debug] Character rotation
 		Quaternion newRotation = _transform.localRotation;
-		newRotation *= Quaternion.AngleAxis(inputSystem.R_STICK.x * _rotationSpeed, Vector3.up);
+		newRotation *= Quaternion.AngleAxis(Time.deltaTime * inputSystem.R_STICK.x * _debug_rotationSpeed, Vector3.up);
 		_transform.localRotation = newRotation;
 
+	}
+
+	/* PHYSIC */
+
+	void FixedUpdate() {
+		// Apply gravity to the conserved velocity
+		// [Debug] Can be desactivated with the _debug_useGravity boolean
+		if(_debug_useGravity) _physic._conservedVelocity += _physic._mass * _physic._gravity * Time.fixedDeltaTime;
+
+		// Create new velocity based on the conserved velocity
+		Vector3 newVelocity = _physic._conservedVelocity;
+
+		// Add character input's velocity
+		newVelocity += _walk._velocityInput.x * Time.fixedDeltaTime * _transform.right;
+		newVelocity += _walk._velocityInput.y * Time.fixedDeltaTime * _transform.forward;
+
+		// Apply new velocity
+		_physic._rigidbody.velocity = newVelocity;
+	}
+
+	void OnCollisionEnter(Collision collision){
+		// Set last collision (used to detect if on ground)
+		_physic._lastCollision = collision;
+
+		// For each contact point,
+		foreach (ContactPoint contact in collision.contacts) {
+			// If there is contact with the ground
+			if(_physic.CheckContactWithGround(contact)){
+				// Reset gravity
+				_physic.ResetGravity();
+			}
+		}
+	}
+
+	void OnCollisionStay(Collision collision){
+		// Set last collision (used to detect if on ground)
+		_physic._lastCollision = collision;
+
+		// For each contact point,
+		foreach (ContactPoint contact in collision.contacts) {
+			// If there is contact with the ground
+			if(_physic.CheckContactWithGround(contact)){
+				// Reset gravity
+				_physic.ResetGravity();
+			}
+		}
+	}
+
+	void OnCollisionExit(Collision collision){
+		// Set last collision (used to detect if on ground)
+		_physic._lastCollision = collision;
 	}
 
 }
