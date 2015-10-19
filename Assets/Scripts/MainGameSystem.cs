@@ -7,6 +7,7 @@ public class MainGameSystem : MonoBehaviour {
 	// [Debug] Test character references
 	public InputSystem _debug_mainController;
 	public CharacterSystem _debug_mainCharacter;
+	public CameraSystem _debug_mainCamera;
 
 	/* ATRIBUTES */
 
@@ -24,6 +25,7 @@ public class MainGameSystem : MonoBehaviour {
 	void Update(){
 		// [Debug] Let the mainCharacter recieve the mainController's inputs
 		_debug_mainCharacter.RecieveInputs(_debug_mainController);
+		_debug_mainCamera.RecieveInputs(_debug_mainController);
 	}
 
 }
