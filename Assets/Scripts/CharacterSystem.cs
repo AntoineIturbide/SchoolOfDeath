@@ -29,6 +29,10 @@ public class CharacterSystem : MonoBehaviour {
 	[HideInInspector]
 	public CharacterPhysic _physic;
 
+	// Character abilities
+	[HideInInspector]
+	public AbilityContainer _abilities;
+
 
 
 	/* METHODS */
@@ -39,6 +43,14 @@ public class CharacterSystem : MonoBehaviour {
 
 		// Set the character's rigidbody reference
 		_physic._rigidbody = this.gameObject.GetComponent<Rigidbody>();
+
+		// Link all abilities in this character's hierarchie to this character system
+		foreach (AbilitySystem ability in gameObject.GetComponents<AbilitySystem>()){
+			ability._character = this;
+		}
+		foreach (AbilitySystem ability in gameObject.GetComponentsInChildren<AbilitySystem>()){
+			ability._character = this;
+		}
 	}
 
 	public void RecieveInputs(InputSystem inputSystem){
@@ -60,6 +72,9 @@ public class CharacterSystem : MonoBehaviour {
 
 	}
 
+	void Update(){
+		
+	}
 
 
 	/* PHYSIC */
@@ -72,45 +87,64 @@ public class CharacterSystem : MonoBehaviour {
 		// Create new velocity based on the conserved velocity
 		Vector3 newVelocity = _physic._conservedVelocity;
 
-		// Add character input's velocity
+		// Add character input's velocity to the new velocity
 		newVelocity += _walk._velocityInput.x * Time.fixedDeltaTime * _transform.right;
 		newVelocity += _walk._velocityInput.y * Time.fixedDeltaTime * _transform.forward;
+
+
+		// Apply impulses to the new velocity
+
+		for(int i = 0; i < _physic._impulsesList.Count; i++){
+			if (_physic._impulsesList[i] == Vector3.zero){
+				// Remove impulse if null
+				_physic._impulsesList.RemoveAt(i);
+			}
+			else {
+				// Apply impulse to the new velocity
+				newVelocity += _physic._impulsesList[i];
+			}
+		}
+
+		// Apply all blinks to the new velocity
+		for(int i = 0; i < _physic._blinksList.Count; i++){
+			// Apply blink to the new velocity
+			newVelocity += _physic._blinksList[i] * 50f;
+			// Remove blink after applying it
+			_physic._blinksList.RemoveAt(i);
+		}
 
 		// Apply new velocity
 		_physic._rigidbody.velocity = newVelocity;
 	}
 
 	void OnCollisionEnter(Collision collision){
-		// Set last collision (used to detect if on ground)
-		_physic._lastCollision = collision;
-
 		// For each contact point,
 		foreach (ContactPoint contact in collision.contacts) {
 			// If there is contact with the ground
 			if(_physic.CheckContactWithGround(contact)){
 				// Reset gravity
 				_physic.ResetGravity();
+				// Set time at last colision
+				_physic._timeAtLastColisionWithGround = Time.fixedTime;
 			}
 		}
 	}
 
 	void OnCollisionStay(Collision collision){
-		// Set last collision (used to detect if on ground)
-		_physic._lastCollision = collision;
-
 		// For each contact point,
 		foreach (ContactPoint contact in collision.contacts) {
 			// If there is contact with the ground
 			if(_physic.CheckContactWithGround(contact)){
 				// Reset gravity
 				_physic.ResetGravity();
+				// Set time at last colision
+				_physic._timeAtLastColisionWithGround = Time.fixedTime;
 			}
 		}
 	}
 
 	void OnCollisionExit(Collision collision){
-		// Set last collision (used to detect if on ground)
-		_physic._lastCollision = collision;
+		//
 	}
 
 }

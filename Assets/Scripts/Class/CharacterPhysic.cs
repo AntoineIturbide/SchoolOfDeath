@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class CharacterPhysic  {
@@ -12,9 +13,14 @@ public class CharacterPhysic  {
 	// Velocity conserved between frames
 	[HideInInspector] public Vector3 _conservedVelocity = Vector3.zero;
 
-	// Last collision (used to detect if character's hitbox is on ground)
-	public Collision _lastCollision = new Collision();
+	// List of impulses
+	public List<Vector3> _impulsesList = new List<Vector3>();
 
+	// List of blinks
+	public List<Vector3> _blinksList = new List<Vector3>(); 
+
+	public float _timeAtLastColisionWithGround = 0;
+	public float _onGroundAccuracy = 0.1f;
 
 
 	/* REFERENCES */
@@ -31,7 +37,7 @@ public class CharacterPhysic  {
 
 	// Return if the player is on ground
 	public bool _onGround {
-		get { return _lastCollision.contacts.Length > 0;	}
+		get { return (Time.fixedTime - _timeAtLastColisionWithGround) <= _onGroundAccuracy; }
 	}
 
 
@@ -61,6 +67,16 @@ public class CharacterPhysic  {
 
 	// Return if a contact is connected to the ground
 	public bool CheckContactWithGround(ContactPoint contact){
-		return Vector3.Project(contact.normal,_gravity.normalized).y > 0.5f;;
+		return Vector3.Project(contact.normal,_gravity.normalized).y > 0.5f;
+	}
+
+	// Add an impulse to the physic engine
+	void AddImpulse(Vector3 newImpulse) {
+		_impulsesList.Add(newImpulse);
+	}
+
+	// Add an impulse to the physic engine
+	void AddBlink(Vector3 newBlink) {
+		_blinksList.Add(newBlink);
 	}
 }
