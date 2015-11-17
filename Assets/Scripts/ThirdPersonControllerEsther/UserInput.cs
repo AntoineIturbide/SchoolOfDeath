@@ -62,7 +62,7 @@ public class UserInput : MonoBehaviour
 		Vector3 aimingState = new Vector3 (0.25f, 0, -0.5f);
 		
 		Vector3 pos = Vector3.Lerp (normalState, aimingState, aimingWeight);
-		
+	
 		cam.transform.localPosition = pos;
 	}
 
@@ -84,7 +84,7 @@ public class UserInput : MonoBehaviour
 			move.Normalize ();
 
 		//running shift disabled when aimming
-		bool walkToggle = Input.GetKey (KeyCode.LeftShift) || aim;
+		bool walkToggle = Input.GetKey (KeyCode.LeftShift) /*|| aim*/;
 
 		float walkMultiplier = 1;
 
@@ -112,7 +112,7 @@ public class UserInput : MonoBehaviour
 			if (lastRaycastHit.collider.gameObject.tag == "Ennemy") {
 				Debug.Log ("je te tiens");
 				aim = true;
-				cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 0.5f;
+				//cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 0.5f;
 
 				if (Input.GetAxis ("_xboxController[1].Triggers") > 0 && count < 1) {
 					count ++;
@@ -131,10 +131,6 @@ public class UserInput : MonoBehaviour
 			aim = false;
 			cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 1.5f;
 		}
-		/*} else 
-		{
-			cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 1.5f;
-		}*/
 	}
 
 	IEnumerator timePower1 ()
