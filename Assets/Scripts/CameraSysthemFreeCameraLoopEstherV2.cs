@@ -66,7 +66,7 @@ public class CameraSysthemFreeCameraLoopEstherV2 : CameraSysthemPivotEstherV2
 
 		if (turnsmoothing > 0) {
 			smoothX = Mathf.SmoothDamp (smoothX, x, ref smoothXvelocity, turnsmoothing);
-			smoothY = Mathf.SmoothDamp (smoothY, y, ref smoothYvelocity, turnsmoothing);
+			smoothY = Mathf.SmoothDamp (smoothY, -y, ref smoothYvelocity, turnsmoothing);
 		} else {
 			smoothX = x;
 			smoothY = y;
