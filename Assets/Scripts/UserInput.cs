@@ -101,10 +101,13 @@ public class UserInput : MonoBehaviour
 				if (lastRaycastHit.collider.gameObject.tag == "Ennemy") {
 					Debug.Log ("je te tiens");
 					cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 0.2f;
-				} else {
+				} 
+				if (lastRaycastHit.collider.gameObject.tag != "Ennemy") {
 					cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 1.5f;
 				}
-			} 
+			} else {
+				cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 1.5f;
+			}
 		} else {
 			cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 1.5f;
 		}
