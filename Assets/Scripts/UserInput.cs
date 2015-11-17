@@ -58,15 +58,15 @@ public class UserInput : MonoBehaviour
 	void FixedUpdate ()
 	{
 
-		float horizontal = Input.GetAxis ("_xboxController[1].L_STICK.y");
-		float vertical = Input.GetAxis ("_xboxController[1].L_STICK.x");
+		float horizontal = Input.GetAxis ("_xboxController[1].L_STICK.x");
+		float vertical = Input.GetAxis ("_xboxController[1].L_STICK.y");
 
 
 		if (cam != null) {
 			camForward = Vector3.Scale (cam.forward, new Vector3 (1, 0, 1)).normalized;
-			move = vertical * camForward + horizontal * cam.right;
+			move = -vertical * camForward + horizontal * cam.right;
 		} else {
-			move = vertical * Vector3.forward + horizontal * Vector3.right;
+			move = -vertical * Vector3.forward + horizontal * Vector3.right;
 		}
 
 		if (move.magnitude > 1)
