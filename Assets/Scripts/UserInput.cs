@@ -29,6 +29,13 @@ public class UserInput : MonoBehaviour
 
 	public GameObject cameraContainer;
 
+	//Power 1
+	public GameObject particlePower1;
+
+	int count;
+
+	GameObject mySpawn;
+
 	void Start ()
 	{
 
@@ -43,8 +50,12 @@ public class UserInput : MonoBehaviour
 
 	void LateUpdate ()
 	{
-		aim = Input.GetKey (KeyCode.Joystick1Button0);
-		
+		//aim = Input.GetAxis ("_xboxController[1].Triggers");
+
+		/*if (Input.GetAxis ("_xboxController[1].Triggers") < 0) {
+			aim = true;
+		}*/
+
 		aimingWeight = Mathf.MoveTowards (aimingWeight, (aim) ? 1.0f : 0.0f, Time.deltaTime * 5);
 		
 		Vector3 normalState = new Vector3 (0, 0, -2f);
@@ -94,22 +105,43 @@ public class UserInput : MonoBehaviour
 		move *= walkMultiplier;
 		character.Move (move);
 
-		if (aim == true) {
-			Vector3 origin = Camera.main.transform.position;
-			Vector3 direction = Camera.main.transform.forward;
-			if (Physics.Raycast (origin, direction, out lastRaycastHit, range)) {
-				if (lastRaycastHit.collider.gameObject.tag == "Ennemy") {
-					Debug.Log ("je te tiens");
-					cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 0.2f;
-				} 
-				if (lastRaycastHit.collider.gameObject.tag != "Ennemy") {
-					cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 1.5f;
+		//if (aim == true) {
+		Vector3 origin = Camera.main.transform.position;
+		Vector3 direction = Camera.main.transform.forward;
+		if (Physics.Raycast (origin, direction, out lastRaycastHit, range)) {
+			if (lastRaycastHit.collider.gameObject.tag == "Ennemy") {
+				Debug.Log ("je te tiens");
+				aim = true;
+				cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 0.5f;
+
+				if (Input.GetAxis ("_xboxController[1].Triggers") > 0 && count < 1) {
+					count ++;
+					mySpawn = Instantiate (particlePower1, new Vector3 (lastRaycastHit.collider.transform.position.x, lastRaycastHit.collider.transform.position.y + 3.5f, lastRaycastHit.collider.transform.position.z), Quaternion.identity) as GameObject;
+					StartCoroutine (timePower1 ());
 				}
-			} else {
+				/*if (Input.GetAxis ("_xboxController[1].Triggers") == 0) {
+					count = 0;
+				}*/
+			} 
+			if (lastRaycastHit.collider.gameObject.tag != "Ennemy") {
+				aim = false;
 				cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 1.5f;
 			}
 		} else {
+			aim = false;
 			cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 1.5f;
 		}
+		/*} else 
+		{
+			cameraContainer.GetComponent<CameraSysthemFreeCameraLoopEstherV2> ().turnSpeed = 1.5f;
+		}*/
+	}
+
+	IEnumerator timePower1 ()
+	{
+		
+		yield return new WaitForSeconds (3);
+		Destroy (mySpawn);
+		count = 0;
 	}
 }
