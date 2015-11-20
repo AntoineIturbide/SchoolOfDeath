@@ -5,8 +5,8 @@ public class CharMove : MonoBehaviour
 {
 
 	public float moveSpeedMultiplier = 1;
-	float stationaryTurnSpeed = 180; 
-	float movingTurnSpeed = 360;
+	float stationaryTurnSpeed = 360; 
+	float movingTurnSpeed = 740;
 
 	public bool onGround; 
 
