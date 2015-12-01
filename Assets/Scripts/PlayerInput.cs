@@ -93,9 +93,10 @@ public class PlayerInput : MonoBehaviour
 		float X = Input.GetAxis ("_xboxController[1].L_STICK.x");
 		float Y = Input.GetAxis ("_xboxController[1].L_STICK.y");
 
-		if (X + Y == 0) 
+		if ((X + Y == 0) && grounded == true) 
 		{
 			this.GetComponent<Rigidbody> ().MovePosition (transform.localPosition);
+			this.GetComponent<Rigidbody> ().velocity = new Vector3(0,0,0);
 		}
 
 		Physics.gravity = new Vector3(0, -30.0F, 0);
