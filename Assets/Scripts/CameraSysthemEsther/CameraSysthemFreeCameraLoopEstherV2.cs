@@ -10,7 +10,7 @@ public class CameraSysthemFreeCameraLoopEstherV2 : CameraSysthemPivotEstherV2
 		moveSpeed = 5f;
 	//[SerializeField]
 	public float
-		turnSpeed = 1.5f;
+		turnSpeed = 3f;
 	[SerializeField]
 	private float
 		turnsmoothing = 0.1f;
