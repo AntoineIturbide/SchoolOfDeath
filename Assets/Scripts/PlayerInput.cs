@@ -50,7 +50,7 @@ public class PlayerInput : MonoBehaviour
 	void Start ()
 	{
 		#region Camera system
-		cameraContainer = GameObject.Find ("Camera");
+		cameraContainer = GameObject.Find ("CameraV2");
 		
 		if (Camera.main != null) {
 			cam = Camera.main.transform;
@@ -92,6 +92,8 @@ public class PlayerInput : MonoBehaviour
 		//Store input axes
 		float X = Input.GetAxis ("_xboxController[1].L_STICK.x");
 		float Y = Input.GetAxis ("_xboxController[1].L_STICK.y");
+
+		Debug.Log (X+Y);
 
 		if ((X + Y == 0) && grounded == true) 
 		{
