@@ -44,7 +44,7 @@ GameObject:
   - 4: {fileID: 469306}
   - 114: {fileID: 11428808}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: CameraV2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

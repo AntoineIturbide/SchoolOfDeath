@@ -1362,7 +1362,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 469306, guid: fe48553e205e7ae4a841a3afdb2b7a8b, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 408636, guid: fe48553e205e7ae4a841a3afdb2b7a8b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1379,6 +1379,10 @@ Prefab:
     - target: {fileID: 11428808, guid: fe48553e205e7ae4a841a3afdb2b7a8b, type: 2}
       propertyPath: tiltMin
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 185862, guid: fe48553e205e7ae4a841a3afdb2b7a8b, type: 2}
+      propertyPath: m_TagString
+      value: MainCamera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fe48553e205e7ae4a841a3afdb2b7a8b, type: 2}
