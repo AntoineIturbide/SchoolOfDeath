@@ -88,12 +88,18 @@ public class PlayerInput : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
+
 		//Store input axes
 		float X = Input.GetAxis ("_xboxController[1].L_STICK.x");
 		float Y = Input.GetAxis ("_xboxController[1].L_STICK.y");
 
+		if (X + Y == 0) 
+		{
+			this.GetComponent<Rigidbody> ().MovePosition (transform.localPosition);
+		}
 
-		Physics.gravity = new Vector3 (0, -30.0F, 0);
+		Physics.gravity = new Vector3(0, -30.0F, 0);
+
 		//Debug.Log (this.GetComponent<Rigidbody> ().velocity);
 
 		Move (X, Y);
