@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -99,6 +99,11 @@ public class PlayerInput : MonoBehaviour
 		{
 			this.GetComponent<Rigidbody> ().MovePosition (transform.localPosition);
 			this.GetComponent<Rigidbody> ().velocity = new Vector3(0,0,0);
+		}
+
+if (/*(X + Y == 0) &&*/ grounded == false) 
+		{
+			this.GetComponent<Rigidbody> ().velocity += new Vector3(0,-1.5f,0);
 		}
 
 		Physics.gravity = new Vector3(0, -30.0F, 0);
